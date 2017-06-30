@@ -13,11 +13,7 @@
     <q-tab icon="check" route="/done" exact replace>Done</q-tab>
   </q-tabs>
   <div class="layout-view">
-    <div class="card" v-for="i in 10" :key="i">
-      <div class="card-content">
-        {{ i }}
-      </div>
-    </div>
+     Here you can add a task
   </div>
 </q-layout>
 </template>
