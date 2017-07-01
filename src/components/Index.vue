@@ -1,30 +1,69 @@
 <template>
   <q-layout>
-  <!-- Header -->
   <div slot="header" class="toolbar">
     <q-toolbar-title :padding="1">
       TODO LIST
     </q-toolbar-title>
   </div>
-  <!-- Navigation Tabs -->
   <q-tabs slot="navigation">
-    <q-tab icon="search" route="/" exact replace>Show</q-tab>
+    <q-tab icon="search" route="/" exact replace>Show</q-tab> <!--try to add a num to icon-->
     <q-tab icon="add" route="/add" exact replace>Add</q-tab>
     <q-tab icon="check" route="/done" exact replace>Done</q-tab>
   </q-tabs>
   <div class="layout-view">
-    <div class="card" v-for="i in 10" :key="i">
+    <div class="card" v-for="task in tasks" :key="task.id" @click="showEditOptions(task.id)">
+      <div class="card-title">
+        {{ task.name }}
+      </div>
       <div class="card-content">
-        {{ i }}
+        {{ task.description }}{{ task.deadline }}{{ task.important }}
       </div>
     </div>
+    <q-modal ref="modal">
+    <h4>Basic Modal</h4>
+    <button class="primary" @click="$refs.basicModal.close()">Close</button>
+    </q-modal>
   </div>
 </q-layout>
 </template>
 
 <script>
-export default {
+import { Dialog } from 'quasar'
 
+export default {
+  data () {
+    return {
+      tasks: [
+        {id: 1, name: 'TJ', description: 'test', deadline: '01.07.2017', important: true},
+        {id: 2, name: 'Basket', description: 'test', deadline: '01.07.2017', important: false},
+        {id: 3, name: 'Acheter cadeau', description: 'test', deadline: '01.07.2017', important: true}
+      ]
+    }
+  },
+  methods: {
+    showEditOptions (id) {
+      Dialog.create({
+        title: 'Actions',
+        message: 'Choose action:',
+        stackButtons: true,
+        buttons: [
+          'Cancel',
+          {
+            label: 'Finish',
+            handler () {
+              console.log('finish ' + id)
+            }
+          },
+          {
+            label: 'Delete',
+            handler () {
+              console.log('delete ' + id)
+            }
+          }
+        ]
+      })
+    }
+  }
 }
 </script>
 

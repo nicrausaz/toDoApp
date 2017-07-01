@@ -13,15 +13,19 @@
     <q-tab icon="check" route="/done" exact replace>Done</q-tab>
   </q-tabs>
   <div class="layout-view">
-    Here the finished tasks
-    </div>
+    <q-search v-model="searchModel"></q-search>
+    {{ searchModel }}
   </div>
 </q-layout>
 </template>
 
 <script>
 export default {
-
+  data () {
+    return {
+      searchModel: ''
+    }
+  }
 }
 </script>
 
