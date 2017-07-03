@@ -13,8 +13,8 @@
       <q-tab icon="check" route="/done" exact replace>Done</q-tab>
     </q-tabs>
     <div class="layout-view">
-      <q-search v-model="searchModel" id="searchBar"></q-search>
-      <div class="card" v-for="task in filter" :key="task.id">
+      <search :tasks="tasks" @sort="setFilteredTasks"></search>
+      <div class="card" v-for="task in filteredTasks" :key="task.id">
         <div class="card-title">
           {{ task.name }}
         </div>
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import Search from '../shared/Search'
 export default {
   data () {
     return {
@@ -35,24 +36,17 @@ export default {
         { id: 1, name: 'TJ', description: 'test', deadline: '01.07.2017', important: true },
         { id: 2, name: 'Basket', description: 'test', deadline: '01.07.2017', important: false },
         { id: 3, name: 'Acheter cadeau', description: 'test', deadline: '01.07.2017', important: true }
-      ]
+      ],
+      filteredTasks: []
     }
   },
-  computed: {
-    filter () {
-      let searchText = this.searchModel
-      let tasks = this.tasks
-      if (searchText === '') {
-        return tasks
-      }
-      searchText = searchText.trim().toLowerCase()
-      tasks = tasks.filter((item) => {
-        if (item.name.toLowerCase().indexOf(searchText) !== -1) {
-          return item
-        }
-      })
-      return tasks
+  methods: {
+    setFilteredTasks (filteredTasks) {
+      this.filteredTasks = filteredTasks
     }
+  },
+  components: {
+    Search
   }
 }
 </script>
@@ -60,6 +54,4 @@ export default {
 <style lang="stylus">
   .layout-view
     padding 10px
-  #searchBar
-    padding-bottom 20px
 </style>
