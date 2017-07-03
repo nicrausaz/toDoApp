@@ -18,39 +18,7 @@
 
 <script>
 import { Dialog } from 'quasar'
-Dialog.create({
-  title: 'Add task',
-  form: {
-    name: {
-      type: 'textbox',
-      label: 'Name',
-      model: ''
-    },
-    description: {
-      type: 'textarea',
-      label: 'Description',
-      model: ''
-    },
-    deadline: {
-      type: 'date', // not working
-      label: '',
-      model: ''
-    },
-    important: {
-      type: 'checkbox',
-      items: [
-        {label: 'Important', value: 'important', model: false}
-      ]
-    }
-  },
-  buttons: [
-    'Cancel',
-    {
-      label: 'Ok',
-      handler (data) {}
-    }
-  ]
-})
+
 export default {
   data () {
     return {
@@ -61,6 +29,41 @@ export default {
         important: false
       }
     }
+  },
+  created () {
+    Dialog.create({
+      title: 'Add task',
+      form: {
+        name: {
+          type: 'textbox',
+          label: 'Name',
+          model: ''
+        },
+        description: {
+          type: 'textarea',
+          label: 'Description',
+          model: ''
+        },
+        deadline: {
+          type: 'date', // not working
+          label: '',
+          model: ''
+        },
+        important: {
+          type: 'checkbox',
+          items: [
+            { label: 'Important', value: 'important', model: false }
+          ]
+        }
+      },
+      buttons: [
+        'Cancel',
+        {
+          label: 'Ok'
+          // handler (data) { }
+        }
+      ]
+    })
   }
 }
 </script>

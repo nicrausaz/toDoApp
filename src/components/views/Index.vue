@@ -11,7 +11,7 @@
     <q-tab icon="check" route="/done" exact replace>Done</q-tab>
   </q-tabs>
   <div class="layout-view">
-    <div class="card" v-for="task in tasks" :key="task.id" @click="showEditOptions(task.id)">
+    <div v-for="task in tasks" :class="isImportant" :key="task.id" @click="showEditOptions(task.id)">
       <div class="card-title">
         {{ task.name }}
       </div>
@@ -63,6 +63,11 @@ export default {
         ]
       })
     }
+  },
+  computed: {
+    isImportant () {
+      return this.important ? 'card important' : 'card'
+    }
   }
 }
 </script>
@@ -70,4 +75,6 @@ export default {
 <style lang="stylus">
   .layout-view
     padding 10px
+  .important
+    color red
 </style>
