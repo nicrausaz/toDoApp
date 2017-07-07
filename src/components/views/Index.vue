@@ -1,17 +1,18 @@
 <template>
   <q-layout>
-  <div slot="header" class="toolbar">
-    <q-toolbar-title :padding="1">
-      TODO LIST
-    </q-toolbar-title>
-  </div>
-  <q-tabs slot="navigation">
-    <q-tab icon="search" route="/" exact replace>Show</q-tab> <!--try to add a num to icon-->
-    <q-tab icon="add" route="/add" exact replace>Add</q-tab>
-    <q-tab icon="check" route="/done" exact replace>Done</q-tab>
-  </q-tabs>
+    <div slot="header" class="toolbar">
+      <q-toolbar-title :padding="1">
+        TODO LIST
+      </q-toolbar-title>
+    </div>
+    <q-tabs slot="navigation">
+      <q-tab icon="search" route="/" exact replace>Show</q-tab>
+      <q-tab icon="add" route="/add" exact replace>Add</q-tab>
+      <q-tab icon="check" route="/done" exact replace>Done</q-tab>
+    </q-tabs>
   <div class="layout-view">
-    <div v-for="task in tasks" :class="isImportant" :key="task.id" @click="showEditOptions(task.id)">
+    <search :tasks="tasks" @sort="setFilteredTasks"></search>
+    <div v-for="task in filteredTasks" :key="task.id" :class="isImportant" @click="showEditOptions(task.id)">
       <div class="card-title">
         {{ task.name }}
       </div>
@@ -28,7 +29,8 @@
 </template>
 
 <script>
-import { Dialog } from 'quasar'
+import {Dialog} from 'quasar'
+import Search from '../shared/Search'
 
 export default {
   data () {
@@ -37,7 +39,8 @@ export default {
         {id: 1, name: 'TJ', description: 'test', deadline: '01.07.2017', important: true},
         {id: 2, name: 'Basket', description: 'test', deadline: '01.07.2017', important: false},
         {id: 3, name: 'Acheter cadeau', description: 'test', deadline: '01.07.2017', important: true}
-      ]
+      ],
+      filteredTasks: []
     }
   },
   methods: {
@@ -62,12 +65,18 @@ export default {
           }
         ]
       })
+    },
+    setFilteredTasks (filteredTasks) {
+      this.filteredTasks = filteredTasks
     }
   },
   computed: {
     isImportant () {
       return this.important ? 'card important' : 'card'
     }
+  },
+  components: {
+    Search
   }
 }
 </script>

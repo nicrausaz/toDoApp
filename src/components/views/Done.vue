@@ -1,12 +1,10 @@
 <template>
   <q-layout>
-    <!-- Header -->
     <div slot="header" class="toolbar">
       <q-toolbar-title :padding="1">
         TODO LIST
       </q-toolbar-title>
     </div>
-    <!-- Navigation Tabs -->
     <q-tabs slot="navigation">
       <q-tab icon="search" route="/" exact replace>Show</q-tab>
       <q-tab icon="add" route="/add" exact replace>Add</q-tab>
