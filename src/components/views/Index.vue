@@ -32,12 +32,11 @@
 <script>
 import { Dialog } from 'quasar'
 import Search from '../shared/Search'
-import Tasks from '../../assets/data/tasks.json'
 
 export default {
   data () {
     return {
-      tasks: Tasks.tasks,
+      tasks: [],
       filteredTasks: []
     }
   },
@@ -53,7 +52,7 @@ export default {
           {
             label: 'Finish',
             handler () {
-              console.log(self.tasks[id].id - 1)
+              // console.log(self.tasks[id].id - 1)
             }
           },
           {
@@ -74,9 +73,10 @@ export default {
       return this.important ? 'card important' : 'card'
     },
     getTasks () {
-      this.$http.get('http://localhost:3000/')
+      let self = this
+      this.$http.get('http://localhost:3000/tasks')
       .then(function (response) {
-        console.log(response)
+        self.tasks = response.data
       })
       .catch(function (error) {
         console.log(error)
