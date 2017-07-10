@@ -11,6 +11,9 @@
       <q-tab icon="check" route="/done" exact replace>Done</q-tab>
     </q-tabs>
     <div class="layout-view">
+      <button v-back-to-top.animate="{offset: 0, duration: 200}" class="primary circular fixed-bottom-right animate-pop" style="margin: 0 15px 15px 0">
+        <i>keyboard_arrow_up</i>
+      </button>
       <search :tasks="tasks" @sort="setFilteredTasks"></search>
       <div class="card" v-for="task in filteredTasks" :key="task.id">
         <div class="card-title">
@@ -26,15 +29,13 @@
 
 <script>
 import Search from '../shared/Search'
+import Tasks from '../../assets/data/tasks.json'
+
 export default {
   data () {
     return {
       searchModel: '',
-      tasks: [
-        { id: 1, name: 'TJ', description: 'test', deadline: '01.07.2017', important: true },
-        { id: 2, name: 'Basket', description: 'test', deadline: '01.07.2017', important: false },
-        { id: 3, name: 'Acheter cadeau', description: 'test', deadline: '01.07.2017', important: true }
-      ],
+      tasks: Tasks.tasks,
       filteredTasks: []
     }
   },

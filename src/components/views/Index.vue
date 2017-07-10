@@ -10,41 +10,40 @@
       <q-tab icon="add" route="/add" exact replace>Add</q-tab>
       <q-tab icon="check" route="/done" exact replace>Done</q-tab>
     </q-tabs>
-  <div class="layout-view">
-    <search :tasks="tasks" @sort="setFilteredTasks"></search>
-    <div v-for="task in filteredTasks" :key="task.id" :class="isImportant" @click="showEditOptions(task.id)">
-      <div class="card-title">
-        {{ task.name }}
+    <div class="layout-view">
+      {{getTasks}}
+      <search :tasks="tasks" @sort="setFilteredTasks"></search>
+      <div v-for="task in filteredTasks" :key="task.id" :class="isImportant" @click="showEditOptions(task.id)">
+        <div class="card-title">
+          {{ task.name }}
+        </div>
+        <div class="card-content">
+          {{ task.description }}{{ task.deadline }}{{ task.important }}
+        </div>
       </div>
-      <div class="card-content">
-        {{ task.description }}{{ task.deadline }}{{ task.important }}
-      </div>
+      <q-modal ref="modal">
+        <h4>Basic Modal</h4>
+        <button class="primary" @click="$refs.basicModal.close()">Close</button>
+      </q-modal>
     </div>
-    <q-modal ref="modal">
-    <h4>Basic Modal</h4>
-    <button class="primary" @click="$refs.basicModal.close()">Close</button>
-    </q-modal>
-  </div>
-</q-layout>
+  </q-layout>
 </template>
 
 <script>
-import {Dialog} from 'quasar'
+import { Dialog } from 'quasar'
 import Search from '../shared/Search'
+import Tasks from '../../assets/data/tasks.json'
 
 export default {
   data () {
     return {
-      tasks: [
-        {id: 1, name: 'TJ', description: 'test', deadline: '01.07.2017', important: true},
-        {id: 2, name: 'Basket', description: 'test', deadline: '01.07.2017', important: false},
-        {id: 3, name: 'Acheter cadeau', description: 'test', deadline: '01.07.2017', important: true}
-      ],
+      tasks: Tasks.tasks,
       filteredTasks: []
     }
   },
   methods: {
     showEditOptions (id) {
+      let self = this
       Dialog.create({
         title: 'Actions',
         message: 'Choose action:',
@@ -54,13 +53,13 @@ export default {
           {
             label: 'Finish',
             handler () {
-              console.log('finish ' + id)
+              console.log(self.tasks[id].id - 1)
             }
           },
           {
             label: 'Delete',
             handler () {
-              console.log('delete ' + id)
+              // delete self.tasks[id].id - 1
             }
           }
         ]
@@ -73,6 +72,15 @@ export default {
   computed: {
     isImportant () {
       return this.important ? 'card important' : 'card'
+    },
+    getTasks () {
+      this.$http.get('http://localhost:3000/')
+      .then(function (response) {
+        console.log(response)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
     }
   },
   components: {
