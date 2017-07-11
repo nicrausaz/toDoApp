@@ -1,8 +1,11 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
 const mongoDbConfig = require('./DBconfig.json')
 const Task = require('./models/Task.js')
-const mongoose = require('mongoose')
+
+app.use(bodyParser.json())
 
 mongoose.connect(mongoDbConfig.url)
 
@@ -26,7 +29,12 @@ app.get('/tasks', (req, res) => {
 
 app.get('/delete', (req, res) => {
     let reqId = req.query.deleteId
-    Task.deleteOne({_id: reqId}, function (err) { console.log('delted')})
+    Task.deleteOne({_id: reqId}, function (err) {})
+})
+
+app.post('/add', (req, res) => {
+    var newTask = new Task({ _id: new mongoose.Types.ObjectId, name: req.body.name, description: req.body.description, deadline: req.body.deadline, important: req.body.important, finished: false })
+    newTask.save()
 })
 
 app.get('/finish', (req, res) => {

@@ -44,6 +44,20 @@ export default {
       this.filteredTasks = filteredTasks
     }
   },
+  created () {
+    let self = this
+    this.$http.get('http://localhost:3000/tasks', {
+      params: {
+        finished: true
+      }
+    })
+    .then(function (response) {
+      self.tasks = response.data
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+  },
   components: {
     Search
   }

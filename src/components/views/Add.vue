@@ -31,6 +31,7 @@ export default {
     }
   },
   created () {
+    let self = this
     Dialog.create({
       title: 'Add task',
       form: {
@@ -59,8 +60,21 @@ export default {
       buttons: [
         'Cancel',
         {
-          label: 'Ok'
-          // handler (data) { }
+          label: 'Ok',
+          handler (data) {
+            self.$http.post('http://localhost:3000/add', {
+              name: data.name,
+              description: data.description,
+              deadline: new Date(), // data.deadline
+              important: data.important
+            })
+            .then(function (response) {
+              console.log(response)
+            })
+            .catch(function (error) {
+              console.log(error)
+            })
+          }
         }
       ]
     })
