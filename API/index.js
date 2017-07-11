@@ -25,7 +25,8 @@ app.get('/tasks', (req, res) => {
 })
 
 app.get('/delete', (req, res) => {
-    res.send('delete')
+    let reqId = req.query.deleteId
+    Task.deleteOne({_id: reqId}, function (err) { console.log('delted')})
 })
 
 app.get('/finish', (req, res) => {

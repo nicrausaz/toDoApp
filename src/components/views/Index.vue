@@ -11,9 +11,8 @@
       <q-tab icon="check" route="/done" exact replace>Done</q-tab>
     </q-tabs>
     <div class="layout-view">
-      {{getTasks}}
       <search :tasks="tasks" @sort="setFilteredTasks"></search>
-      <div v-for="task in filteredTasks" :key="task.id" :class="isImportant" @click="showEditOptions(task.id)">
+      <div v-for="task in filteredTasks" :key="task._id" :class="isImportant" @click="showEditOptions(task._id)">
         <div class="card-title">
           {{ task.name }}
         </div>
@@ -43,6 +42,7 @@ export default {
   methods: {
     showEditOptions (id) {
       let self = this
+      console.log(id)
       Dialog.create({
         title: 'Actions',
         message: 'Choose action:',
@@ -52,13 +52,23 @@ export default {
           {
             label: 'Finish',
             handler () {
-              // console.log(self.tasks[id].id - 1)
+              // set to finished
             }
           },
           {
             label: 'Delete',
             handler () {
-              // delete self.tasks[id].id - 1
+              self.$http.get('http://localhost:3000/delete', {
+                params: {
+                  deleteId: id
+                }
+              })
+              .then(function (response) {
+                console.log(response)
+              })
+              .catch(function (error) {
+                console.log(error)
+              })
             }
           }
         ]
@@ -71,17 +81,17 @@ export default {
   computed: {
     isImportant () {
       return this.important ? 'card important' : 'card'
-    },
-    getTasks () {
-      let self = this
-      this.$http.get('http://localhost:3000/tasks')
-      .then(function (response) {
-        self.tasks = response.data
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
     }
+  },
+  created () {
+    let self = this
+    this.$http.get('http://localhost:3000/tasks')
+    .then(function (response) {
+      self.tasks = response.data
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
   },
   components: {
     Search
