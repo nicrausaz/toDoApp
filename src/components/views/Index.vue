@@ -42,7 +42,6 @@ export default {
   methods: {
     showEditOptions (id) {
       let self = this
-      console.log(id)
       Dialog.create({
         title: 'Actions',
         message: 'Choose action:',
@@ -52,7 +51,17 @@ export default {
           {
             label: 'Finish',
             handler () {
-              // set to finished
+              self.$http.get('http://localhost:3000/finish', {
+                params: {
+                  finishId: id
+                }
+              })
+              .then(function (response) {
+                console.log(response)
+              })
+              .catch(function (error) {
+                console.log(error)
+              })
             }
           },
           {
@@ -62,12 +71,6 @@ export default {
                 params: {
                   deleteId: id
                 }
-              })
-              .then(function (response) {
-                console.log(response)
-              })
-              .catch(function (error) {
-                console.log(error)
               })
             }
           }

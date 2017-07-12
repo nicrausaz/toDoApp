@@ -38,7 +38,11 @@ app.post('/add', (req, res) => {
 })
 
 app.get('/finish', (req, res) => {
-    res.send('finish')
+    let reqId = req.query.finishId
+    Task.findOne({ _id: reqId }, function (err, task) {
+        task.finished = true
+        task.save()
+    })
 })
 
 app.listen(3000, () => {
