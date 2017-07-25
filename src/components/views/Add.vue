@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { Dialog } from 'quasar'
+import { Dialog, Toast } from 'quasar'
 
 export default {
   data () {
@@ -25,9 +25,34 @@ export default {
       task: {
         name: '',
         description: '',
-        deadline: '',
+        deadline: new Date(),
         important: false
       }
+    }
+  },
+  methods: {
+    toastInfo () {
+      Toast.create.warning({
+        html: 'Task name must be filled',
+        timeout: 2500
+      })
+    },
+    checkData (data) {
+      return data.name === ''
+    },
+    addTask (data) {
+      this.$http.post('http://localhost:3000/add', {
+        name: data.name,
+        description: data.description,
+        deadline: new Date(), // data.deadline
+        important: data.important
+      })
+      .then(function (response) {
+        console.log(response)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
     }
   },
   created () {
@@ -47,7 +72,7 @@ export default {
         },
         deadline: {
           type: 'date', // not working
-          label: '',
+          label: 'Limit date',
           model: ''
         },
         important: {
@@ -62,18 +87,12 @@ export default {
         {
           label: 'Ok',
           handler (data) {
-            self.$http.post('http://localhost:3000/add', {
-              name: data.name,
-              description: data.description,
-              deadline: new Date(), // data.deadline
-              important: data.important
-            })
-            .then(function (response) {
-              console.log(response)
-            })
-            .catch(function (error) {
-              console.log(error)
-            })
+            if (!self.checkData(data)) {
+              self.addTask()
+            }
+            else {
+              self.toastInfo()
+            }
           }
         }
       ]
